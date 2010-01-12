@@ -1,0 +1,21 @@
+---
+abstract: 'clone or update all repositories found elsewhere'
+author:
+  - 'Ricardo SIGNES <rjbs@cpan.org>'
+generated_by: 'Dist::Zilla version 1.100060'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Git-Megapull
+requires:
+  App::Cmd::Simple: 0
+  Config::INI::Reader: 0
+  ExtUtils::MakeMaker: 6.11
+  JSON: 2
+  LWP::Simple: 0
+  String::RewritePrefix: 0
+  autodie: 0
+resources:
+  repository: http://github.com/rjbs/git-megapull
+version: 0.100110

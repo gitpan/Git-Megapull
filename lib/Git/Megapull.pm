@@ -1,8 +1,7 @@
 use strict;
 use warnings;
 package Git::Megapull;
-our $VERSION = '0.092560';
-
+our $VERSION = '0.100110';
 use base 'App::Cmd::Simple';
 # ABSTRACT: clone or update all repositories found elsewhere
 
@@ -94,7 +93,6 @@ sub __do_cmd {
 1;
 
 __END__
-
 =pod
 
 =head1 NAME
@@ -103,7 +101,7 @@ Git::Megapull - clone or update all repositories found elsewhere
 
 =head1 VERSION
 
-version 0.092560
+version 0.100110
 
 =head1 OVERVIEW
 
@@ -145,11 +143,10 @@ repos to have more attributes than a name and URI.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Ricardo SIGNES.
+This software is copyright (c) 2010 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
-=cut 
-
+=cut
 
