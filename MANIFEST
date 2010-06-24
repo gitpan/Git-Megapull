@@ -11,5 +11,4 @@ lib/Git/Megapull.pm
 lib/Git/Megapull/Source.pm
 lib/Git/Megapull/Source/Github.pm
 t/compile.t
-t/release-pod-coverage.t
 t/release-pod-syntax.t

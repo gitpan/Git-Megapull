@@ -1,7 +1,9 @@
 use strict;
 use warnings;
 package Git::Megapull::Source;
-our $VERSION = '0.100110';
+BEGIN {
+  $Git::Megapull::Source::VERSION = '0.101750';
+}
 # ABSTRACT: a source of cloneable git repository URIs
 
 
@@ -16,7 +18,7 @@ Git::Megapull::Source - a source of cloneable git repository URIs
 
 =head1 VERSION
 
-version 0.100110
+version 0.101750
 
 =head1 OVERVIEW
 
@@ -27,7 +29,7 @@ See L<Git::Megapull>.
 
 =head1 AUTHOR
 
-  Ricardo SIGNES <rjbs@cpan.org>
+Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 

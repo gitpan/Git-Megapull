@@ -1,7 +1,9 @@
 use strict;
 use warnings;
 package Git::Megapull;
-our $VERSION = '0.100110';
+BEGIN {
+  $Git::Megapull::VERSION = '0.101750';
+}
 use base 'App::Cmd::Simple';
 # ABSTRACT: clone or update all repositories found elsewhere
 
@@ -55,20 +57,21 @@ sub execute {
   for my $name (sort { $a cmp $b } keys %$repos) {
     my $name = $name;
     my $uri  = $repos->{ $name };
+    my $dirname = $opt->{bare} ? "$name.git" : $name;
 
-    if (-d $name) {
+    if (-d $dirname) {
       if (not $opt->{clonely}) {
+        my $merge = $opt->{bare} ? '' : "&& git merge $opt->{origin}/master";
         $self->__do_cmd(
-          "cd $name && "
-          . "git fetch $opt->{origin} && "
-          . "git merge $opt->{origin}/master 2>&1"
+          "cd $dirname && "
+          . "git fetch $opt->{origin} $merge"
         );
       }
     } else {
       $self->_clone_repo($name, $uri, $opt);
     }
 
-    delete $existing_dir{ $name };
+    delete $existing_dir{ $dirname };
   }
 
   for (keys %existing_dir) {
@@ -81,13 +84,22 @@ sub _clone_repo {
   my ($self, $repo, $uri, $opt) = @_;
 
   my $bare = $opt->{bare} ? '--bare' : '';
-  $self->__do_cmd("git clone -o $opt->{origin} $bare $uri 2>&1");
+  # git clone --origin doesn't work with --bare on git 1.6.6.1 or git
+  # 1.7: "fatal: --bare and --origin origin options are incompatible."
+  my $orig = $opt->{bare} ? ''       : "--origin $opt->{origin}";
+  $self->__do_cmd("git clone $orig $bare $uri");
+
+  if ($opt->{bare}) {
+      # Add an origin remote so we can git fetch later
+      my ($target) = $uri =~ m[/(.*?)$];
+      $self->__do_cmd("(cd $target && git remote add origin $uri && cd ..)");
+  }
 }
 
 sub __do_cmd {
   my ($self, $cmd) = @_;
   print "$cmd\n";
-  print `$cmd`;
+  system("$cmd");
 }
 
 1;
@@ -101,7 +113,7 @@ Git::Megapull - clone or update all repositories found elsewhere
 
 =head1 VERSION
 
-version 0.100110
+version 0.101750
 
 =head1 OVERVIEW
 
@@ -139,7 +151,7 @@ repos to have more attributes than a name and URI.
 
 =head1 AUTHOR
 
-  Ricardo SIGNES <rjbs@cpan.org>
+Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 

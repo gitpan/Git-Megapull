@@ -1,7 +1,9 @@
 use strict;
 use warnings;
 package Git::Megapull::Source::Github;
-our $VERSION = '0.100110';
+BEGIN {
+  $Git::Megapull::Source::Github::VERSION = '0.101750';
+}
 use base 'Git::Megapull::Source';
 # ABSTRACT: clone/update all your repositories from github.com
 
@@ -11,9 +13,10 @@ use JSON 2 ();
 
 
 sub repo_uris {
-  my $config  = Config::INI::Reader->read_file("$ENV{HOME}/.gitconfig");
-  my $login   = $config->{github}{login} || die "no github login\n";
-  my $token   = $config->{github}{token} || die "no github token\n";
+  my $config_file = "$ENV{HOME}/.gitconfig";
+  my $config      = Config::INI::Reader->read_file($config_file);
+  my $login       = $config->{github}{login} || die "No github.login found in `$config_file'\n";
+  my $token       = $config->{github}{token} || die "No github.token found in `$config_file'\n";
 
   my $json =
     get("http://github.com/api/v1/json/$login?login=$login&token=$token");
@@ -47,7 +50,7 @@ Git::Megapull::Source::Github - clone/update all your repositories from github.c
 
 =head1 VERSION
 
-version 0.100110
+version 0.101750
 
 =head1 OVERVIEW
 
@@ -74,7 +77,7 @@ This source will probably be broken out into its own dist in the future.
 
 =head1 AUTHOR
 
-  Ricardo SIGNES <rjbs@cpan.org>
+Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
