@@ -1,25 +1,24 @@
 use strict;
 use warnings;
 package Git::Megapull::Source::Github;
-BEGIN {
-  $Git::Megapull::Source::Github::VERSION = '0.101750';
+{
+  $Git::Megapull::Source::Github::VERSION = '0.101751';
 }
 use base 'Git::Megapull::Source';
 # ABSTRACT: clone/update all your repositories from github.com
 
-use LWP::Simple qw(get);
-use Config::INI::Reader;
+use LWP::UserAgent;
+use Config::GitLike;
 use JSON 2 ();
 
 
 sub repo_uris {
   my $config_file = "$ENV{HOME}/.gitconfig";
-  my $config      = Config::INI::Reader->read_file($config_file);
-  my $login       = $config->{github}{login} || die "No github.login found in `$config_file'\n";
-  my $token       = $config->{github}{token} || die "No github.token found in `$config_file'\n";
+  my $config = Config::GitLike->new(confname => $config_file);
+  my $login       = $config->get(key => "github.login") || die "No github.login found in `$config_file'\n";
+  my $token       = $config->get(key => "github.token") || die "No github.token found in `$config_file'\n";
 
-  my $json =
-    get("http://github.com/api/v1/json/$login?login=$login&token=$token");
+  my $json = _get_json("http://github.com/api/v1/json/$login?login=$login&token=$token");
 
   my $data = eval { JSON->new->decode($json) };
 
@@ -39,6 +38,20 @@ sub repo_uris {
   return \%repo_uri;
 }
 
+sub _get_json {
+  my $url = shift;
+
+  my $ua = LWP::UserAgent->new;
+  $ua->env_proxy;
+
+  my $response = $ua->get($url);
+  if ($response->is_success) {
+    return $response->content;
+  } else {
+    die $response->status_line;
+  }
+}
+
 1;
 
 __END__
@@ -50,7 +63,7 @@ Git::Megapull::Source::Github - clone/update all your repositories from github.c
 
 =head1 VERSION
 
-version 0.101750
+version 0.101751
 
 =head1 OVERVIEW
 
@@ -81,7 +94,7 @@ Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Ricardo SIGNES.
+This software is copyright (c) 2011 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

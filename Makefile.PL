@@ -4,36 +4,39 @@ use warnings;
 
 
 
-use ExtUtils::MakeMaker 6.31;
+use ExtUtils::MakeMaker 6.30;
 
 
 
 my %WriteMakefileArgs = (
-  'ABSTRACT' => 'clone or update all repositories found elsewhere',
-  'AUTHOR' => 'Ricardo SIGNES <rjbs@cpan.org>',
-  'BUILD_REQUIRES' => {
-    'Test::More' => '0'
+  "ABSTRACT" => "clone or update all repositories found elsewhere",
+  "AUTHOR" => "Ricardo SIGNES <rjbs\@cpan.org>",
+  "BUILD_REQUIRES" => {
+    "Test::More" => "0.96"
   },
-  'CONFIGURE_REQUIRES' => {
-    'ExtUtils::MakeMaker' => '6.31'
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.30"
   },
-  'DISTNAME' => 'Git-Megapull',
-  'EXE_FILES' => [
-    'bin/git-megapull'
+  "DISTNAME" => "Git-Megapull",
+  "EXE_FILES" => [
+    "bin/git-megapull"
   ],
-  'LICENSE' => 'perl',
-  'NAME' => 'Git::Megapull',
-  'PREREQ_PM' => {
-    'App::Cmd::Simple' => '0',
-    'Config::INI::Reader' => '0',
-    'JSON' => '2',
-    'LWP::Simple' => '0',
-    'String::RewritePrefix' => '0',
-    'autodie' => '0'
+  "LICENSE" => "perl",
+  "NAME" => "Git::Megapull",
+  "PREREQ_PM" => {
+    "App::Cmd::Simple" => 0,
+    "Config::GitLike" => "1.05",
+    "JSON" => 2,
+    "LWP::UserAgent" => 0,
+    "String::RewritePrefix" => 0,
+    "autodie" => 0,
+    "base" => 0,
+    "strict" => 0,
+    "warnings" => 0
   },
-  'VERSION' => '0.101750',
-  'test' => {
-    'TESTS' => 't/*.t'
+  "VERSION" => "0.101751",
+  "test" => {
+    "TESTS" => "t/*.t"
   }
 );
 

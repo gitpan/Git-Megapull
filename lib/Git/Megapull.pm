@@ -1,14 +1,14 @@
 use strict;
 use warnings;
 package Git::Megapull;
-BEGIN {
-  $Git::Megapull::VERSION = '0.101750';
+{
+  $Git::Megapull::VERSION = '0.101751';
 }
 use base 'App::Cmd::Simple';
 # ABSTRACT: clone or update all repositories found elsewhere
 
 use autodie;
-use Config::INI::Reader;
+use Config::GitLike;
 use String::RewritePrefix;
 
 
@@ -29,8 +29,9 @@ sub execute {
 
   my $source = $opt->{source};
   unless ($source) {
-    my $config = Config::INI::Reader->read_file("$ENV{HOME}/.gitconfig");
-    $source = $config->{megapull}{source};
+    my $config = Config::GitLike->new(confname => "$ENV{HOME}/.gitconfig");
+    $config->load;
+    $source = $config->get(key => "megapull.source");
   }
 
   $source ||= $self->_default_source;
@@ -113,11 +114,11 @@ Git::Megapull - clone or update all repositories found elsewhere
 
 =head1 VERSION
 
-version 0.101750
+version 0.101751
 
 =head1 OVERVIEW
 
-This library implements the C<git-megaclone> command, which will find a list of
+This library implements the C<git-megapull> command, which will find a list of
 remote repositories and clone them.  If they already exist, they will be
 updated from their origins, instead.
 
@@ -155,7 +156,7 @@ Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Ricardo SIGNES.
+This software is copyright (c) 2011 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
