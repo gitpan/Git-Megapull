@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Git::Megapull;
 {
-  $Git::Megapull::VERSION = '0.101751';
+  $Git::Megapull::VERSION = '0.101752';
 }
 use base 'App::Cmd::Simple';
 # ABSTRACT: clone or update all repositories found elsewhere
@@ -106,6 +106,7 @@ sub __do_cmd {
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -114,9 +115,12 @@ Git::Megapull - clone or update all repositories found elsewhere
 
 =head1 VERSION
 
-version 0.101751
+version 0.101752
 
 =head1 OVERVIEW
+
+B<Achtung!>  Probably you can skip using Git::Megapull.  Instead, go check out
+L<App::GitGot>.
 
 This library implements the C<git-megapull> command, which will find a list of
 remote repositories and clone them.  If they already exist, they will be
@@ -156,10 +160,9 @@ Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Ricardo SIGNES.
+This software is copyright (c) 2013 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
